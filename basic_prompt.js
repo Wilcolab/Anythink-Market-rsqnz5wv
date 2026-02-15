@@ -2,7 +2,7 @@ function addNumbers(a, b) {
     return a + b;
 }
 /**
- * Converts a string to camelCase format.
+ * Converts a string to camelCase format..
  * Words are separated by spaces, hyphens, or underscores.
  * The first word is lowercase, and subsequent words have their first letter capitalized.
  * 

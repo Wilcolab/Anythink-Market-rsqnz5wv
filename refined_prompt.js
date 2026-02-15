@@ -9,9 +9,9 @@
  */
 
 /**
- * Converts a string to dot.case format (lowercase words separated by dots)
+ * Converts a string to dot.case format (lowercase words separated by dots).
  * @function toDotCase
- * @param {*} input - Any input type (string, number, null, undefined, etc.)
+ * @param {*} input - Any input type (string, number, null, undefined, etc)
  * @returns {string} dot.case formatted string with all words lowercase and separated by dots
  * @throws {TypeError} When input is not a string. Error message includes the actual type received.
  * @description Processes input by:

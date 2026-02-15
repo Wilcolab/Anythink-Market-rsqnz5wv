@@ -1,4 +1,5 @@
 name: Build and deploy to Kubernetes
+
 on:
   push:
     branches:
@@ -51,7 +52,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -59,21 +60,20 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Set the image tag
         run: echo IMAGE_TAG=${GITHUB_REPOSITORY/\//-}-latest >> $GITHUB_ENV
 
       - name: Set repository name
         run: |
-          if [ ${{ secrets.CLUSTER_ENV }} == 'staging' ]; then
+          if [ "${{ secrets.CLUSTER_ENV }}" = "staging" ]; then
             echo "REPO_NAME=staging-anythink-backend" >> $GITHUB_ENV
           else
             echo "REPO_NAME=anythink-backend" >> $GITHUB_ENV
           fi
 
       - name: Build, tag, and push backend image to Amazon ECR
-        id: build-image-backend
         run: |
           docker build \
             -t ${{ steps.login-ecr.outputs.registry }}/${{ env.REPO_NAME }}:${{ env.IMAGE_TAG }} \
@@ -91,7 +91,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -99,21 +99,20 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Set the image tag
         run: echo IMAGE_TAG=${GITHUB_REPOSITORY/\//-}-latest >> $GITHUB_ENV
 
       - name: Set repository name
         run: |
-          if [ ${{ secrets.CLUSTER_ENV }} == 'staging' ]; then
+          if [ "${{ secrets.CLUSTER_ENV }}" = "staging" ]; then
             echo "REPO_NAME=staging-anythink-frontend" >> $GITHUB_ENV
           else
             echo "REPO_NAME=anythink-frontend" >> $GITHUB_ENV
           fi
 
       - name: Build, tag, and push frontend image to Amazon ECR
-        id: build-image-frontend
         run: |
           docker build \
             -t ${{ steps.login-ecr.outputs.registry }}/${{ env.REPO_NAME }}:${{ env.IMAGE_TAG }} \
@@ -137,12 +136,14 @@ jobs:
           mkdir -p $HOME/.kube/
           echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
+
       - name: Install helm
         run: |
           curl -LO https://get.helm.sh/helm-v3.8.0-linux-amd64.tar.gz
           tar -zxvf helm-v3.8.0-linux-amd64.tar.gz
-          mv linux-amd64/helm /usr/local/bin/helm
+          sudo mv linux-amd64/helm /usr/local/bin/helm
           helm version
+
       - name: Lint helm charts
         run: helm lint ./charts/
 

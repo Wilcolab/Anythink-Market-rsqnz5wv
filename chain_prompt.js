@@ -13,7 +13,7 @@ function toKebabCase(input) {
     // Trim whitespace from both ends
     let cleaned = input.trim();
 
-    // Step 2: Normalize and clean input
+    // Step 2: Normalize and clean input.
     // Convert to lowercase
     cleaned = cleaned.toLowerCase();
 
