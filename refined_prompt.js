@@ -1,29 +1,3 @@
-/*************  ✨ Windsurf Command ⭐  *************/
-function toDotCase(input) {
-  if (typeof input !== 'string') {
-    throw new TypeError(`toDotCase() expects a string, but received ${typeof input}`);
-  }
-
-  input = input.trim().replace(/[^\w\s\d\-_\.\/]+/g, '');
-
-  const words = input
-    .split(/[ \-_\.\s\/]+/)
-    .map(word => word.replace(/^[0-9]+/g, ''))
-    .filter(word => word !== '' );
-
-  const dotCaseString = words.reduce(
-    (result, word, index) =>
-      index === 0
-        ? word.toLowerCase()
-        : `${result}.${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`,
-    ''
-  );
-
-  return dotCaseString;
-}
-/*******  7972622d-8099-4ef5-8f5a-89e6d13832fd  *******/
-
-
 function toCamelCase(input) {
   if (typeof input !== 'string') {
     throw new TypeError(`toCamelCase() expects a string, but received ${typeof input}`);
@@ -104,26 +78,3 @@ function toCamelCase(input) {
 function toDotCase(input) {
   // ...
 }
-
-/**
- * Converts a string to snakeCase.
- * @param {string} input - The string to convert.
- * @returns {string} The snakeCased string.
- * @example
- * toSnakeCase('hello world') // 'hello_world'
- */
-function toSnakeCase(input) {
-  // ...
-}
-
-/**
- * Converts a string to dashCase.
- * @param {string} input - The string to convert.
- * @returns {string} The dashCased string.
- * @example
- * toDashCase('hello world') // 'hello-world'
- */
-function toDashCase(input) {
-  // ...
-}
-/*******  84f12697-ccb9-466e-a6d0-6012d1177d53  *******/
